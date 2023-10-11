@@ -2,8 +2,8 @@ import os
 import subprocess
 import wave
 
-AUDIOS_SEM_ROBO_DIR = "audios_tc_sem_robo"
-AUDIOS_CORTADOS_DIR = "audios_sem_robo_cortados"
+AUDIOS_SEM_ROBO_DIR = os.path.join("..", "audios_tc_sem_robo")
+AUDIOS_CORTADOS_DIR = os.path.join("..", "audios_sem_robo_cortados")
 
 
 def get_most_shortest_audio() -> float:
@@ -61,4 +61,33 @@ def cut_audios(to_time: str) -> None:
             )
 
 
-cut_audios(format_seconds_to_ffmpeg_time_format(get_most_shortest_audio()))
+def get_audio_duration(filepath: str) -> float:
+    with wave.open(filepath, "rb") as audio_file:
+        framerate = audio_file.getframerate()
+        frames = audio_file.getnframes()
+
+        total_seconds = frames / framerate
+
+    return total_seconds
+
+
+def get_audios_average_duration() -> None:
+    durations = []
+
+    for arquivo in os.listdir(AUDIOS_SEM_ROBO_DIR):
+        if arquivo.endswith(".wav"):
+            filepath = os.path.join(AUDIOS_SEM_ROBO_DIR, arquivo)
+            duration = get_audio_duration(filepath)
+
+            durations.append(duration)
+
+    if len(durations):
+        duracao_media = sum(durations) / len(durations)
+
+        print(
+            f"The average length of the .wav files in the folder is {duracao_media:.2f} seconds or {(duracao_media / 60):.2f} minutes"
+        )
+
+
+get_audios_average_duration()
+# cut_audios(format_seconds_to_ffmpeg_time_format(get_most_shortest_audio()))
