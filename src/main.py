@@ -74,20 +74,21 @@ def get_audio_duration(filepath: str) -> float:
 def get_audios_average_duration() -> None:
     durations = []
 
-    for arquivo in os.listdir(AUDIOS_SEM_ROBO_DIR):
-        if arquivo.endswith(".wav"):
-            filepath = os.path.join(AUDIOS_SEM_ROBO_DIR, arquivo)
+    for filename in os.listdir(AUDIOS_SEM_ROBO_DIR):
+        if filename.endswith(".wav"):
+            filepath = os.path.join(AUDIOS_SEM_ROBO_DIR, filename)
             duration = get_audio_duration(filepath)
 
             durations.append(duration)
 
     if len(durations):
-        duracao_media = sum(durations) / len(durations)
+        average_duration = sum(durations) / len(durations)
 
         print(
-            f"The average length of the .wav files in the folder is {duracao_media:.2f} seconds or {(duracao_media / 60):.2f} minutes"
+            f"The average length of the .wav files in the folder is {(average_duration / 60):.2f} minutes"
         )
 
 
-get_audios_average_duration()
-# cut_audios(format_seconds_to_ffmpeg_time_format(get_most_shortest_audio()))
+if __name__ == "__main__":
+    get_audios_average_duration()
+    # cut_audios(format_seconds_to_ffmpeg_time_format(get_most_shortest_audio()))
