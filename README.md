@@ -1,4 +1,4 @@
-# TC II
+# TC II - BCC
 
 Algumas funções usadas para o projeto de TC II - BCC
 
